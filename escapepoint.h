@@ -29,6 +29,7 @@ private:
     bool upDir, downDir, leftDir, rightDir;
 
     void CheckBorders(QPoint *point);
+    void Escaping();
 
 public slots:
     void TimerSlot();
