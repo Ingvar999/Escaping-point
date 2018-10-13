@@ -52,7 +52,7 @@ void EscapePoint::TimerSlot(){
 }
 
 void EscapePoint::Escaping(){
-    static const int priority = 6;
+    static const int priority = 7;
     static const double sensitivity = 0.1;
 
     int x = victim->x(), y = victim->y();
@@ -105,13 +105,13 @@ void EscapePoint::Escaping(){
 }
 
 void EscapePoint::CheckBorders(QPoint *point){
-    if (point->x() < 0)
+    if (point->x() <= 0)
         point->rx() = 1;
-    if (point->x() > window->width() - diameter)
+    if (point->x() >= window->width() - diameter)
         point->rx() = window->width() - diameter - 1;
-    if (point->y() < 0)
+    if (point->y() <= 0)
         point->ry() = 1;
-    if (point->y() > window->height() - diameter)
+    if (point->y() >= window->height() - diameter)
         point->ry() = window->height() - diameter - 1;
 
 }
