@@ -6,13 +6,14 @@
 #include <QWidget>
 #include <QTimer>
 #include <QPainter>
+#include <QVector>
 
 class EscapePoint : public QObject
 {
     Q_OBJECT
 
 public:
-    EscapePoint(QWidget *window, int speed, int diameter);
+    EscapePoint(QWidget *window, int speed, int diameter, int victimsCount);
     ~EscapePoint();
 
     void SetUpDir(bool val){upDir = val;}
@@ -24,12 +25,13 @@ public:
 private:
     QWidget *window;
     int speed, diameter;
-    QPoint *player, *victim;
+    QPoint *player;
+    QVector<QPoint*> victims;
     QTimer *timer;
     bool upDir, downDir, leftDir, rightDir;
 
     void CheckBorders(QPoint *point);
-    void Escaping();
+    void Escaping(QPoint *victim);
 
 public slots:
     void TimerSlot();

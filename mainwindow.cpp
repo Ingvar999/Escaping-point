@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    esc(new EscapePoint(this, 10, 30))
+    esc(new EscapePoint(this, 10, 30, 3))
 {
     ui->setupUi(this);
     setWindowIcon(QIcon(":/D:/git/Icon1.ico"));

@@ -3,18 +3,21 @@
 
 using namespace std;
 
-EscapePoint::EscapePoint(QWidget *window, int speed, int diameter):
+EscapePoint::EscapePoint(QWidget *window, int speed, int diameter, int victimsCount):
     window(window),
     speed(speed),
     diameter(diameter),
     player( new QPoint(0,0)),
-    victim( new QPoint(1,1)),
+    victims( QVector<QPoint*>(victimsCount)),
     timer(new QTimer()),
     upDir(false),
     downDir(false),
     leftDir(false),
     rightDir(false)
 {
+    for (int i = 0; i < victims.size(); ++i){
+        victims[i] = new QPoint(i * diameter, i * diameter);
+    }
     connect(timer, SIGNAL(timeout()), this, SLOT(TimerSlot()));
     timer->start(50);
 }
@@ -29,10 +32,13 @@ void EscapePoint::Refresh(QPainter *painter){
     painter->setBrush(QBrush(Qt::green));
     painter->drawEllipse(rect);
 
-    rect = {victim->x(), victim->y(), diameter, diameter};
-    painter->setPen(Qt::red);
-    painter->setBrush(QBrush(Qt::red));
-    painter->drawEllipse(rect);
+    for (int i = 0; i < victims.size(); ++i){
+        QPoint* victim = victims.at(i);
+        rect = {victim->x(), victim->y(), diameter, diameter};
+        painter->setPen(Qt::red);
+        painter->setBrush(QBrush(Qt::red));
+        painter->drawEllipse(rect);
+    }
 }
 
 void EscapePoint::TimerSlot(){
@@ -46,13 +52,15 @@ void EscapePoint::TimerSlot(){
         player->rx() += speed;
     CheckBorders(player);
 
-    Escaping();
+    for (int i = 0; i < victims.size(); ++i){
+        Escaping(victims[i]);
+    }
 
     window->repaint();
 }
 
-void EscapePoint::Escaping(){
-    static const int priority = 7;
+void EscapePoint::Escaping(QPoint *victim){
+    static const int priority = 5;
     static const double sensitivity = 0.1;
 
     int x = victim->x(), y = victim->y();
