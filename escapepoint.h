@@ -24,14 +24,14 @@ public:
 
 private:
     QWidget *window;
-    int speed, diameter;
-    QPoint *player;
-    QVector<QPoint*> victims;
+    int speed, diameter, radius, xSpeed, ySpeed;
+    QVector<QPoint*> players, directions;
     QTimer *timer;
     bool upDir, downDir, leftDir, rightDir;
 
     void CheckBorders(QPoint *point);
-    void Escaping(QPoint *victim);
+    void Escaping(int i);
+    void MoveWithoutOverlapping();
 
 public slots:
     void TimerSlot();
